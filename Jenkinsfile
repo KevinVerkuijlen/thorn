@@ -52,8 +52,8 @@ pipeline {
                              gcloud config set project rekeningrijden-project
                              gcloud container clusters get-credentials test-cluster
 
-                             kubectl apply --force=true --all=true --record=true -f ./thorntail2/k8s/
-                             kubectl rollout status --watch=true --v=8 -f ./thorntail2/k8s/deployment.yaml
+                             kubectl apply --force=true --all=true --record=true -f ./k8s/
+                             kubectl rollout status --watch=true --v=8 -f ./k8s/deployment.yaml
                              gcloud auth revoke --all
                              '''
                          }
