@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
-
-COPY ./target/demo-thorntail.jar /opt
+RUN ls -a
+COPY ./target/thorntail-thorntail.jar /opt
 RUN apt update -y \
 	&& apt install -y openjdk-11-jre
 
-CMD java -jar /opt/demo-thorntail.jar -Djava.net.preferIPv4Stack=true
+CMD java -jar /opt/thorntail-thorntail.jar -Djava.net.preferIPv4Stack=true
