@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: overheid-backend-con
-        image: kevinverkuijlenfontys/thorntail-example::test
+        image: kevinverkuijlenfontys/thorntail-example:test
         ports:
         - containerPort: 8080
         imagePullPolicy: Always
