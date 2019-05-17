@@ -28,14 +28,14 @@ pipeline {
         }
         stage('Docker Build') {
             steps {
-                sh 'docker build . -t kevinverkuijlenfontys/thorntail-example::test'
+                sh 'docker build . -t kevinverkuijlenfontys/thorntail-example:test'
             }
         }
         stage('Docker publish') {
             steps {
                 withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId:'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD']]) {
                   sh 'docker login -u $USERNAME -p $PASSWORD'
-                  sh 'docker push kevinverkuijlenfontys/thorntail-example::test'
+                  sh 'docker push kevinverkuijlenfontys/thorntail-example:test'
                   sh 'docker logout'
                 }
 
