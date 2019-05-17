@@ -1,0 +1,3 @@
+service: thorntail
+runtime: custom
+env: flex

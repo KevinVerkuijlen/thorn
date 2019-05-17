@@ -1,0 +1,43 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: thorn-dep
+  labels:
+    app: thorn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: thorn
+  template:
+    metadata:
+      labels:
+        app: thorn
+    spec:
+      containers:
+      - name: overheid-backend-con
+        image: kevinverkuijlenfontys/thorntail-example::test
+        ports:
+        - containerPort: 8080
+        imagePullPolicy: Always
+      - name: cloudsql-proxy
+        image: gcr.io/cloudsql-docker/gce-proxy:1.11
+        command: ["/cloud_sql_proxy",
+                  "-instances=rekeningrijden-project:europe-west1:rekeningrijden=tcp:3306",
+                  "-credential_file=/secrets/cloudsql/credentials.json"]
+        # [START cloudsql_security_context]
+        securityContext:
+            runAsUser: 2  # non-root user
+            allowPrivilegeEscalation: false
+          # [END cloudsql_security_context]
+        volumeMounts:
+            - name: cloudsql-instance-credentials
+              mountPath: /secrets/cloudsql
+              readOnly: true
+          # [END proxy_container]
+          # [START volumes]
+      volumes:
+          - name: cloudsql-instance-credentials
+            secret:
+              secretName: cloudsql-instance-credentials
+
