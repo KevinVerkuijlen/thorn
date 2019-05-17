@@ -18,16 +18,14 @@ pipeline {
          }
         stage('Test') {
             steps {
-                sh 'mvn -f ./pom.xml clean test'
+                sh 'mvn test'
             }
         }
-
         stage('Package') {
             steps {
-                sh 'mvn -f ./pom.xml -B -DskipTests package'
+                sh 'mvn -B -DskipTests clean package'
             }
         }
-
         stage('Docker Build') {
             steps {
                 sh 'docker build . -t kevinverkuijlenfontys/thorntail-example::test'
