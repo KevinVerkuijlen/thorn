@@ -43,7 +43,7 @@ pipeline {
         }
         stage('GCP Kubernetes') {
              steps {
-                 withCredentials([file(credentialsId: 'google_cloud_id', variable: 'JENKINSGCLOUDCREDENTIAL')])
+                 withCredentials([file(credentialsId: 'gke-rekeningrijden', variable: 'JENKINSGCLOUDCREDENTIAL')])
                          {
                          sh '''
                              pwd
