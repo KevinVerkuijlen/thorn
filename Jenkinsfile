@@ -20,11 +20,6 @@ pipeline {
             steps {
                 sh 'mvn -f ./pom.xml clean test'
             }
-            post {
-                always {
-                    junit './target/surefire-reports/*.xml'
-                }
-            }
         }
 
         stage('Package') {
