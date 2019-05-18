@@ -5,7 +5,7 @@
 <hibernate-configuration>
     <session-factory>
         <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="connection.url">jdbc:mysql://localhost:3306/OVERHEID</property>
+        <property name="connection.url">jdbc:mysql://127.0.0.1:3306/OVERHEID</property>
         <property name="connection.username">overheid</property>
         <property name="connection.password">UncleSam2019!</property>
         <property name="current_session_context_class">thread</property>
