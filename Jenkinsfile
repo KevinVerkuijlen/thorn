@@ -21,19 +21,18 @@ pipeline {
                 sh 'mvn -f ./pom.xml test'
             }
         }
-        stage('SonarQube analysis') {
-          steps{
-             withSonarQubeEnv('My SonarQube Server') {
-               sh 'mvn clean package sonar:sonar'
-             }
-          }
-        }
-        stage("Quality Gate"){
-              steps {
-                  timeout(time: 5, unit: 'MINUTES') { // Just in case something goes wrong, pipeline will be killed after a timeout
-                    
-                  }
-              }
+        stage('Sonarqube') {
+            environment {
+                scannerHome = tool 'SonarQubeScanner'
+            }
+            steps {
+                withSonarQubeEnv('sonarqube') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+                timeout(time: 10, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
         }
         stage('Package') {
             steps {
