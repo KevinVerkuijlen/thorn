@@ -74,5 +74,26 @@ pipeline {
              }
 
         }
+        stage('jfrog'){
+            steps {
+            def server = Artifactory.newServer url: 'https://myartifactory:8081', credentialsId: 'jfrog-login'
+            def rtMaven = Artifactory.newMavenBuild()
+            rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
+            rtMaven.deployer server: server, releaseRepo: 'libs-release-local', snapshotRepo: 'libs-snapshot-local'
+            // Optionally include or exclude artifacts to be deployed to Artifactory:
+            rtMaven.deployer.artifactDeploymentPatterns.addExclude("*.zip")
+            // Set a Maven Tool defined in Jenkins "Manage":
+            rtMaven.tool = MAVEN_TOOL
+            // Optionally set Maven Ops
+            rtMaven.opts = '-Xms1024m -Xmx4096m'
+            // Run Maven:
+            def buildInfo = rtMaven.run pom: 'maven-example/pom.xml', goals: 'clean install'
+            // Alternatively, you can pass an existing build-info instance to the run method:
+            // rtMaven.run pom: './pom.xml', goals: 'clean install', buildInfo: buildInfo
+
+            // Publish the build-info to Artifactory:
+            server.publishBuildInfo buildInfo
+            }
+        }
     }
 }
