@@ -32,25 +32,26 @@ pipeline {
                             }
                         }
 
-                        stage ('Exec Maven') {
-                            steps {
-                                rtMavenRun (
-                                    tool: 'maven', // Tool name from Jenkins configuration
-                                    pom: './pom.xml',
-                                    goals: 'clean install',
-                                    deployerId: "MAVEN_DEPLOYER",
-                                    resolverId: "MAVEN_RESOLVER"
-                                )
-                            }
-                        }
+        stage ('Exec Maven') {
+            steps {
+                rtMavenRun (
+                    pom: './pom.xml',
+                    goals: 'clean install',
+                    deployerId: "MAVEN_DEPLOYER",
+                    resolverId: "MAVEN_RESOLVER"
+                )
+            }
+        }
 
-                        stage ('Publish build info') {
-                            steps {
-                                rtPublishBuildInfo (
-                                    serverId: "ARTIFACTORY_SERVER"
-                                )
-                            }
-                        }
+        stage ('Publish build info') {
+            steps {
+                rtPublishBuildInfo (
+                    serverId: "ARTIFACTORY_SERVER"
+                )
+            }
+        }
+
+
         stage('Cleanup'){
             steps{
                 sh '''
