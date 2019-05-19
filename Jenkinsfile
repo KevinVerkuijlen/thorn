@@ -76,6 +76,7 @@ pipeline {
         }
         stage('jfrog'){
             steps {
+            script {
             def server = Artifactory.newServer url: 'https://myartifactory:8081', credentialsId: 'jfrog-login'
             def rtMaven = Artifactory.newMavenBuild()
             rtMaven.resolver server: server, releaseRepo: 'libs-release', snapshotRepo: 'libs-snapshot'
@@ -93,6 +94,7 @@ pipeline {
 
             // Publish the build-info to Artifactory:
             server.publishBuildInfo buildInfo
+            }
             }
         }
     }
